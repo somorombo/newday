@@ -3,263 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ CYBER-NET SOHBET v3 ⚡</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>Discord Sohbet</title>
+    <link href="https://fonts.googleapis.com/css2?family=GG+Sans:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --neon-cyan: #00f0ff;
-            --neon-pink: #ff0055;
-            --neon-green: #39ff14;
-            /* Arka plan tamamen sade ve düz siyah yapıldı */
-            --bg-dark: #0a0a0c;
-            --bg-card: #111116;
-            --border-neon: 1px solid #00f0ff44;
+            /* Tamamen Discord Renk Paleti 🎨 */
+            --dc-bg-main: #313338;
+            --dc-bg-sidebar: #2b2d31;
+            --dc-bg-server: #1e1f22;
+            --dc-bg-input: #383a40;
+            --dc-bg-login: #1e1f22;
+            --dc-text-normal: #dbdee1;
+            --dc-text-muted: #949ba4;
+            --dc-brand: #5865f2;
+            --dc-brand-hover: #4752c4;
+            --dc-green: #23a55a;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Share Tech Mono', monospace; }
-        body {
-            background-color: var(--bg-dark); 
-            color: #fff; 
-            height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            overflow: hidden;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'GG Sans', sans-serif; }
+        body { background-color: var(--dc-bg-main); color: var(--dc-text-normal); height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; }
 
-        .login-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 5, 10, 0.98); display: flex; justify-content: center; align-items: center; z-index: 999; }
-        .login-box { background: var(--bg-card); border: 2px solid var(--neon-pink); padding: 40px; text-align: center; box-shadow: 0 0 20px #ff005533; max-width: 400px; width: 90%; }
+        /* YENİ DISCORD GİRİŞ EKRANI 🔵 */
+        .login-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #5865f2; background-image: url('https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png'); background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; z-index: 999; }
+        .login-box { background: var(--dc-bg-login); padding: 32px; border-radius: 8px; text-align: center; max-width: 480px; width: 90%; box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+        .login-box h2 { color: #fff; font-size: 1.5rem; font-weight: 600; margin-bottom: 8px; }
+        .login-box p { color: var(--dc-text-muted); font-size: 0.95rem; margin-bottom: 20px; }
+        .login-box label { display: block; text-align: left; color: var(--dc-text-muted); text-transform: uppercase; font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .login-box input { width: 100%; background: #1e1f22; border: 1px solid #111; border-radius: 4px; color: #fff; padding: 10px; margin-bottom: 20px; outline: none; font-size: 1rem; transition: 0.2s; }
+        .login-box input:focus { border-color: var(--dc-brand); }
+        .login-btn { width: 100%; background: var(--dc-brand); border: none; border-radius: 4px; color: #fff; padding: 12px; cursor: pointer; font-weight: 500; font-size: 1rem; transition: 0.2s; }
+        .login-btn:hover { background: var(--dc-brand-hover); }
+
+        /* ANA EKRAN DÜZENİ */
+        .cyber-grid { display: none; grid-template-columns: 240px 1fr; width: 100vw; height: 100vh; }
         
-        /* Ana grid yapısı tüm ekranı kaplayacak şekilde sabitlendi */
-        .cyber-grid { 
-            display: none; 
-            grid-template-columns: 300px 1fr; 
-            width: 100vw; 
-            height: 100vh; 
-            background: var(--bg-dark);
-        }
+        /* SOL MENÜ (KANALLAR) */
+        .cyber-sidebar { background: var(--dc-bg-sidebar); display: flex; flex-direction: column; height: 100vh; border-top-left-radius: 8px; }
+        .cyber-logo { height: 48px; border-bottom: 1px solid rgba(0,0,0,0.2); display: flex; align-items: center; padding: 0 16px; font-weight: 700; color: #fff; font-size: 0.95rem; }
+        .group-creator { padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); }
+        .group-creator input { width: 100%; background: var(--dc-bg-server); border: none; border-radius: 4px; color: #fff; padding: 8px; margin-bottom: 8px; outline: none; font-size: 0.85rem; }
+        .sidebar-scroll { flex: 1; overflow-y: auto; padding: 8px; }
+        .section-title { color: var(--dc-text-muted); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin: 16px 0 8px 8px; display: flex; justify-content: space-between; align-items: center; }
         
-        .cyber-sidebar { border-right: 2px solid var(--neon-cyan); display: flex; flex-direction: column; background: #0e0e12; padding: 20px; height: 100vh; }
-        .cyber-logo { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; text-align: center; color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); margin-bottom: 25px; letter-spacing: 2px; }
-        .group-creator { background: #15151f; border: var(--border-neon); padding: 10px; margin-bottom: 20px; }
-        .group-creator input, .login-box input { width: 100%; background: #0a0a0c; border: 1px solid var(--neon-pink); color: #fff; padding: 10px; margin-bottom: 15px; outline: none; font-size: 1rem; }
+        .room-item { padding: 8px 12px; border-radius: 4px; margin-bottom: 20px; cursor: pointer; transition: 0.1s; display: flex; align-items: center; gap: 8px; color: var(--dc-text-muted); font-weight: 500; font-size: 0.95rem; }
+        .room-item i { font-size: 1.1rem; color: var(--dc-text-muted); }
+        .room-item:hover { background: rgba(79,84,92,0.16); color: var(--dc-text-normal); }
+        .room-item.active { background: rgba(79,84,92,0.24); color: #fff; }
+        .room-item.active i { color: #fff; }
         
-        .cyber-btn { width: 100%; background: transparent; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 10px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.2s; }
-        .cyber-btn:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 15px var(--neon-cyan); }
-        .section-title { color: var(--neon-pink); font-size: 1.1rem; margin-bottom: 10px; text-transform: uppercase; }
-        .room-list { flex: 1; overflow-y: auto; }
-        .room-item { padding: 12px; border: var(--border-neon); margin-bottom: 10px; cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; background: #111116; }
-        .room-item:hover, .room-item.active { border-color: var(--neon-pink); box-shadow: 0 0 10px #ff005533; background: #1a111a; }
+        /* SAĞ TARAF (SOHBET ALANI) */
+        .cyber-chat-area { display: flex; flex-direction: column; background: var(--dc-bg-main); height: 100vh; position: relative; }
+        .chat-terminal-header { height: 48px; border-bottom: 1px solid rgba(0,0,0,0.2); display: flex; align-items: center; padding: 0 16px; background: var(--dc-bg-main); box-shadow: 0 1px 2px rgba(0,0,0,0.1); gap: 8px; }
+        .chat-terminal-header i { color: var(--dc-text-muted); font-size: 1.2rem; }
+        .active-room-title { color: #fff; font-weight: 600; font-size: 0.95rem; }
         
-        /* Sohbet alanı yüksekliği sabitlendi */
-        .cyber-chat-area { display: flex; flex-direction: column; background: var(--bg-dark); height: 100vh; position: relative; }
-        .chat-terminal-header { padding: 15px 20px; border-bottom: 2px solid var(--neon-cyan); display: flex; justify-content: space-between; align-items: center; background: #0e0e12; height: 60px; }
-        .active-room-title { font-family: 'Orbitron', sans-serif; color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green); }
-        
-        /* Mesajların kayacağı ekran alanı sınırlandı */
+        /* SOHBET EKRANI - SON MESAJIN DIŞARIDA KALMA HATASI ÇÖZÜLDÜ 🛠️ */
         .terminal-screen { 
             flex: 1; 
-            padding: 25px; 
-            overflow-y: auto; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px;
-            height: calc(100vh - 120px); /* Üst ve alt bar harici alan */
-        }
-        
-        .cyber-msg { display: flex; flex-direction: column; max-width: 80%; }
-        .msg-meta { font-size: 0.8rem; color: var(--neon-cyan); margin-bottom: 4px; }
-        .msg-text { background: #111116; border-left: 3px solid var(--neon-green); padding: 10px 15px; line-height: 1.5; color: #e0e0ff; word-break: break-word; }
-        .msg-image { max-width: 300px; max-height: 300px; border: 2px solid var(--neon-pink); margin-top: 8px; display: block; box-shadow: 0 0 10px rgba(255, 0, 85, 0.3); }
-        
-        /* MESAJ KUTUSU BURASI - EKRANIN EN ALTINA SABİTLENDİ 📌 */
-        .terminal-input-bar { 
-            border-top: 2px solid var(--neon-cyan); 
-            padding: 15px 20px; 
-            display: flex; 
-            gap: 15px; 
-            background: #0e0e12; 
-            align-items: center;
-            height: 60px;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-        }
-        .terminal-prompt { color: var(--neon-green); font-weight: bold; font-size: 1.2rem; }
-        .terminal-input-bar input[type="text"] { flex: 1; background: transparent; border: none; outline: none; color: var(--neon-green); font-size: 1.1rem; }
-    </style>
-</head>
-<body>
-
-    <div class="login-overlay" id="loginOverlay">
-        <div class="login-box">
-            <h2 class="cyber-logo" style="margin-bottom: 20px;">// SİBER_AĞA_BAĞLAN</h2>
-            <input type="text" id="nicknameInput" placeholder="Sistem Kimliği (Rumuz)..." onkeypress="if(event.key === 'Enter') enterNetwork()">
-            <button class="cyber-btn" onclick="enterNetwork()">BAĞLANTIYI BAŞLAT ⚡</button>
-        </div>
-    </div>
-
-    <div class="cyber-grid" id="mainGrid">
-        <div class="cyber-sidebar">
-            <div class="cyber-logo">// TIKDIYE_NET</div>
-            <div class="section-title">> GRUP_OLUSTUR</div>
-            <div class="group-creator">
-                <input type="text" id="newRoomName" placeholder="Grup ismi girin...">
-                <button class="cyber-btn" onclick="createNewRoom()">⚡ ODALARA EKLE</button>
-            </div>
-            <div class="section-title">> SEKTORLER (GRUPLAR)</div>
-            <div class="room-list" id="roomList"></div>
-        </div>
-
-        <div class="cyber-chat-area">
-            <div class="chat-terminal-header">
-                <div class="active-room-title" id="activeRoomTitle">AKTIF_SEKTOR: YÜKLENİYOR...</div>
-                <div style="color: var(--neon-pink)" id="connStatus">[ BAĞLANTI: PASİF ]</div>
-            </div>
-            <div class="terminal-screen" id="terminalScreen"></div>
-            <div class="terminal-input-bar">
-                <span class="terminal-prompt" id="promptSpan">user@cyber:~#</span>
-                <input type="text" id="msgInput" placeholder="Mesaj veya Resim Linki yazın..." onkeypress="if(event.key === 'Enter') sendCyberMessage()">
-                <i class="fa-solid fa-terminal" style="color: var(--neon-cyan); cursor: pointer; font-size: 1.2rem;" onclick="sendCyberMessage()"></i>
-            </div>
-        </div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyA23OvrMxgJh3LQdNKufx_mAZ6ySDL0q7Y",
-            authDomain: "newday-c3e99.firebaseapp.com",
-            databaseURL: "https://newday-c3e99-default-rtdb.firebaseio.com",
-            projectId: "newday-c3e99",
-            storageBucket: "newday-c3e99.firebasestorage.app",
-            messagingSenderId: "53077741823",
-            appId: "1:53077741823:web:40eb894e553e6d97397cca"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
-        let myNickname = "";
-        let currentRoom = "GENEL_LOBI";
-        let messageListeners = {};
-
-        window.enterNetwork = function() {
-            const input = document.getElementById('nicknameInput');
-            const nick = input.value.trim().toUpperCase();
-            if(!nick) { alert("Geçersiz Kimlik!"); return; }
-            
-            myNickname = nick;
-            document.getElementById('loginOverlay').style.display = 'none';
-            document.getElementById('mainGrid').style.display = 'grid';
-            document.getElementById('promptSpan').innerText = `${myNickname.toLowerCase()}@cyber:~#`;
-            document.getElementById('connStatus').innerText = "[ BAĞLANTI: AKTIF ]";
-            document.getElementById('connStatus').style.color = "var(--neon-green)";
-            setupRooms();
-        }
-
-        function setupRooms() {
-            const defaultRooms = ["GENEL_LOBI", "YAZILIM_EKIBI", "SİBER_MEYDAN"];
-            const roomListDiv = document.getElementById('roomList');
-            roomListDiv.innerHTML = "";
-            defaultRooms.forEach((room, index) => {
-                const item = document.createElement('div');
-                item.className = `room-item ${index === 0 ? 'active' : ''}`;
-                item.id = `room-${room}`;
-                item.onclick = () => switchRoom(room);
-                item.innerHTML = `<span># ${room}</span><i class="fa-solid fa-layer-group"></i>`;
-                roomListDiv.appendChild(item);
-            });
-            switchRoom("GENEL_LOBI");
-        }
-
-        window.createNewRoom = function() {
-            const input = document.getElementById('newRoomName');
-            const roomName = input.value.trim().toUpperCase().replace(/ /g, "_");
-            if(!roomName) return;
-            const roomListDiv = document.getElementById('roomList');
-            if(!document.getElementById(`room-${roomName}`)) {
-                const item = document.createElement('div');
-                item.className = 'room-item';
-                item.id = `room-${roomName}`;
-                item.onclick = () => switchRoom(roomName);
-                item.innerHTML = `<span># ${roomName}</span><i class="fa-solid fa-users-viewfinder"></i>`;
-                roomListDiv.appendChild(item);
-            }
-            input.value = '';
-            switchRoom(roomName);
-        }
-
-        function switchRoom(roomName) {
-            currentRoom = roomName;
-            document.getElementById('activeRoomTitle').innerText = `AKTIF_SEKTOR: ${roomName}`;
-            document.querySelectorAll('.room-item').forEach(el => el.classList.remove('active'));
-            const activeItem = document.getElementById(`room-${roomName}`);
-            if(activeItem) activeItem.classList.add('active');
-
-            const screen = document.getElementById('terminalScreen');
-            screen.innerHTML = `<div class="cyber-msg"><div class="msg-meta">[SYSTEM]</div><div class="msg-text" style="border-left-color: var(--neon-pink)">#${roomName} kanalına güvenli bağlantı kuruldu.</div></div>`;
-
-            if (!messageListeners[roomName]) {
-                const roomRef = ref(db, `rooms/${roomName}`);
-                onChildAdded(roomRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if (currentRoom === roomName) { displayMessage(data); }
-                });
-                messageListeners[roomName] = true;
-            }
-        }
-
-        function displayMessage(data) {
-            const screen = document.getElementById('terminalScreen');
-            const isMe = data.sender === myNickname;
-            
-            function detectLinks(text) {
-                const urlRegex = /(https?:\/\/[^\s]+)/g;
-                return text.replace(urlRegex, function(url) {
-                    if (url.match(/\.(jpeg|jpg|gif|png|webp|svg)/i)) {
-                        return `<img src="${url}" class="msg-image" alt="Görsel">`;
-                    }
-                    return `<a href="${url}" target="_blank" style="color: var(--neon-cyan);">${url}</a>`;
-                });
-            }
-
-            const formattedMessage = detectLinks(data.message);
-            const isImage = formattedMessage.includes('<img');
-
-            let content = `<div class="msg-text">${formattedMessage}</div>`;
-            if (isImage) {
-                content = `<div class="msg-text" style="border-left-color: var(--neon-pink);"><div>[GÖRSEL_VERİ]</div>${formattedMessage}</div>`;
-            }
-
-            const msgHtml = `<div class="cyber-msg" style="${isMe ? 'align-self: flex-end;' : 'align-self: flex-start;'}"><div class="msg-meta">[${data.sender}] - ${data.time}</div>${content}</div>`;
-            screen.innerHTML += msgHtml;
-            
-            // Mesaj gelince ekranı otomatik en alta kaydır
-            screen.scrollTop = screen.scrollHeight;
-        }
-
-        window.sendCyberMessage = function() {
-            const input = document.getElementById('msgInput');
-            const text = input.value.trim();
-            if(!text) return;
-            
-            const now = new Date();
-            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-            
-            set(push(ref(db, `rooms/${currentRoom}`)), { 
-                sender: myNickname, 
-                message: text, 
-                time: timeStr,
-                type: "text"
-            });
-            input.value = '';
-        }
-    </script>
-</body>
-</html>
+            padding: 20px 20px 100px 20px; /* Al
