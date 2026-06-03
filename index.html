@@ -3,234 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tıkdiye Sohbet Sitesi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>⚡ CYBER-NET SOHBET ⚡</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-main: #0b141a;
-            --bg-sidebar: #111b21;
-            --bg-chat: #0b141a;
-            --bg-panel: #202c33;
-            --text-primary: #e9edef;
-            --text-secondary: #8696a0;
-            --wa-green: #00a884;
-            --wa-green-hover: #008f72;
-            --bubble-out: #005c4b;
-            --bubble-in: #202c33;
-            --border-color: #222e35;
-            --input-bg: #2a3942;
+            --neon-cyan: #00f0ff;
+            --neon-pink: #ff0055;
+            --neon-green: #39ff14;
+            --bg-dark: #05050a;
+            --bg-card: #0d0d1a;
+            --border-neon: 1px solid #00f0ff44;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #0c1317; height: 100vh; display: flex; justify-content: center; align-items: center; color: var(--text-primary); overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Share Tech Mono', monospace; }
+        body {
+            background-color: var(--bg-dark); color: #fff; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden;
+            background-image: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 6px 100%;
+        }
 
-        /* AUTH SCREEN */
-        .auth-container { background-color: var(--bg-sidebar); padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); width: 100%; max-width: 400px; text-align: center; border-top: 6px solid var(--wa-green); }
-        .auth-container i.fa-comments { font-size: 3rem; color: var(--wa-green); margin-bottom: 15px; }
-        .auth-container h2 { margin-bottom: 25px; font-weight: 600; }
-        .input-group { margin-bottom: 20px; text-align: left; }
-        .input-group label { display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 0.9rem; }
-        .input-group input { width: 100%; padding: 12px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 1rem; outline: none; }
-        .input-group input:focus { border-color: var(--wa-green); }
-        .auth-btn { width: 100%; padding: 12px; background-color: var(--wa-green); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .auth-btn:hover { background-color: var(--wa-green-hover); }
-        .auth-toggle { margin-top: 20px; font-size: 0.9rem; color: var(--text-secondary); }
-        .auth-toggle span { color: var(--wa-green); cursor: pointer; font-weight: 600; }
-
-        /* MAIN APP */
-        .app-container { display: none; width: 100vw; height: 100vh; grid-template-columns: 30% 70%; }
-        .sidebar { background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
-        .sidebar-header { background-color: var(--bg-panel); padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; height: 60px; }
-        .user-avatar { width: 40px; height: 40px; background-color: var(--wa-green); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.1rem; }
-        .header-icons { color: var(--text-secondary); display: flex; gap: 20px; font-size: 1.2rem; }
-        .header-icons i { cursor: pointer; }
-        .header-icons i:hover { color: var(--text-primary); }
-        .chat-list { flex: 1; overflow-y: auto; }
-        .chat-item { display: flex; padding: 12px 16px; align-items: center; gap: 15px; cursor: pointer; background-color: var(--bg-panel); border-bottom: 1px solid var(--border-color); }
-        .chat-info { flex: 1; }
-        .chat-info-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
-        .chat-name { font-weight: 600; }
+        .login-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 5, 10, 0.95); display: flex; justify-content: center; align-items: center; z-index: 999; }
+        .login-box { background: var(--bg-card); border: 2px solid var(--neon-pink); padding: 40px; text-align: center; box-shadow: 0 0 20px #ff005533; max-width: 400px; width: 90%; }
+        .cyber-grid { display: none; grid-template-columns: 300px 1fr; width: 95vw; height: 90vh; background: var(--bg-card); border: 2px solid var(--neon-cyan); box-shadow: 0 0 20px #00f0ff33; border-radius: 4px; }
+        .cyber-sidebar { border-right: 2px solid var(--neon-cyan); display: flex; flex-direction: column; background: #080812; padding: 20px; }
+        .cyber-logo { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; text-align: center; color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); margin-bottom: 25px; letter-spacing: 2px; }
+        .group-creator { background: #121225; border: var(--border-neon); padding: 10px; margin-bottom: 20px; }
+        .group-creator input, .login-box input { width: 100%; background: #05050a; border: 1px solid var(--neon-pink); color: #fff; padding: 10px; margin-bottom: 15px; outline: none; font-size: 1rem; }
         
-        /* CHAT AREA */
-        .chat-area { background-color: var(--bg-chat); background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-blend-mode: overlay; background-color: rgba(11, 20, 26, 0.95); display: flex; flex-direction: column; }
-        .chat-header { background-color: var(--bg-panel); height: 60px; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; border-left: 1px solid var(--border-color); }
-        .messages-container { flex: 1; padding: 20px 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .message { max-width: 60%; padding: 8px 12px; border-radius: 8px; font-size: 0.95rem; position: relative; display: flex; flex-direction: column; }
-        .message.sent { background-color: var(--bubble-out); align-self: flex-end; border-top-right-radius: 0; }
-        .message.received { background-color: var(--bubble-in); align-self: flex-start; border-top-left-radius: 0; }
-        .message-user { font-size: 0.75rem; color: #ffeb3b; font-weight: bold; margin-bottom: 2px; }
-        .message-time { font-size: 0.7rem; color: rgba(255, 255, 255, 0.5); align-self: flex-end; margin-top: 4px; }
-        .chat-footer { background-color: var(--bg-panel); padding: 10px 16px; display: flex; align-items: center; gap: 15px; }
-        .chat-footer input { flex: 1; background-color: var(--input-bg); border: none; outline: none; border-radius: 8px; padding: 10px 15px; color: var(--text-primary); font-size: 1rem; }
+        .cyber-btn { width: 100%; background: transparent; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 10px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.2s; }
+        .cyber-btn:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 15px var(--neon-cyan); }
+        .section-title { color: var(--neon-pink); font-size: 1.1rem; margin-bottom: 10px; text-transform: uppercase; }
+        .room-list { flex: 1; overflow-y: auto; }
+        .room-item { padding: 12px; border: var(--border-neon); margin-bottom: 10px; cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; background: #0a0a16; }
+        .room-item:hover, .room-item.active { border-color: var(--neon-pink); box-shadow: 0 0 10px #ff005533; background: #140b15; }
+        
+        .cyber-chat-area { display: flex; flex-direction: column; background: #05050a; }
+        .chat-terminal-header { padding: 15px 20px; border-bottom: 2px solid var(--neon-cyan); display: flex; justify-content: space-between; align-items: center; background: #080812; }
+        .active-room-title { font-family: 'Orbitron', sans-serif; color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green); }
+        .terminal-screen { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .cyber-msg { display: flex; flex-direction: column; max-width: 80%; }
+        .msg-meta { font-size: 0.8rem; color: var(--neon-cyan); margin-bottom: 4px; }
+        .msg-text { background: #0d0d1a; border-left: 3px solid var(--neon-green); padding: 10px 15px; line-height: 1.5; color: #e0e0ff; }
+        .msg-image { max-width: 300px; max-height: 300px; border: 2px solid var(--neon-pink); margin-top: 8px; display: block; box-shadow: 0 0 10px rgba(255, 0, 85, 0.3); }
+        
+        .terminal-input-bar { border-top: 2px solid var(--neon-cyan); padding: 15px 20px; display: flex; gap: 15px; background: #080812; align-items: center; }
+        .terminal-prompt { color: var(--neon-green); font-weight: bold; font-size: 1.2rem; }
+        .terminal-input-bar input[type="text"] { flex: 1; background: transparent; border: none; outline: none; color: var(--neon-green); font-size: 1.1rem; }
+        .file-upload-label { color: var(--neon-pink); cursor: pointer; font-size: 1.3rem; transition: 0.2s; }
+        .file-upload-label:hover { text-shadow: 0 0 10px var(--neon-pink); }
     </style>
 </head>
 <body>
 
-    <div class="auth-container" id="authScreen">
-        <i class="fa-solid fa-comments"></i>
-        <h2 id="authTitle">Tıkdiye'ye Giriş Yap</h2>
-        <div class="input-group">
-            <label>Kullanıcı Adı</label>
-            <input type="text" id="username" placeholder="Kullanıcı adınız">
-        </div>
-        <div class="input-group">
-            <label>Şifre</label>
-            <input type="password" id="password" placeholder="Şifreniz">
-        </div>
-        <button class="auth-btn" id="authBtn" onclick="handleAuth()">Giriş Yap</button>
-        <div class="auth-toggle">
-            <p id="toggleText">Hesabınız yok mu? <span onclick="toggleAuthMode()">Kayıt Ol</span></p>
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <h2 class="cyber-logo" style="margin-bottom: 20px;">// SİBER_AĞA_BAĞLAN</h2>
+            <input type="text" id="nicknameInput" placeholder="Sistem Kimliği (Rumuz)..." onkeypress="if(event.key === 'Enter') enterNetwork()">
+            <button class="cyber-btn" onclick="enterNetwork()">BAĞLANTIYI BAŞLAT ⚡</button>
         </div>
     </div>
 
-    <div class="app-container" id="appScreen">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="user-avatar" id="currentUserAvatar">?</div>
-                <div class="header-icons">
-                    <i class="fa-solid fa-right-from-bracket" title="Çıkış Yap" onclick="logout()"></i>
-                </div>
+    <div class="cyber-grid" id="mainGrid">
+        <div class="cyber-sidebar">
+            <div class="cyber-logo">// TIKDIYE_NET</div>
+            <div class="section-title">> GRUP_OLUSTUR</div>
+            <div class="group-creator">
+                <input type="text" id="newRoomName" placeholder="Grup ismi girin...">
+                <button class="cyber-btn" onclick="createNewRoom()">⚡ ODALARA EKLE</button>
             </div>
-            <div class="chat-list">
-                <div class="chat-item">
-                    <div class="user-avatar" style="background-color: #00a884;">T</div>
-                    <div class="chat-info">
-                        <div class="chat-info-top"><span class="chat-name">Genel Sohbet Odası 🌍</span></div>
-                    </div>
-                </div>
-            </div>
+            <div class="section-title">> SEKTORLER (GRUPLAR)</div>
+            <div class="room-list" id="roomList"></div>
         </div>
 
-        <div class="chat-area">
-            <div class="chat-header">
-                <div style="display:flex; align-items:center; gap:15px;">
-                    <div class="user-avatar" style="background-color: #00a884;">T</div>
-                    <div>
-                        <div class="chat-name">Genel Sohbet Odası 🌍</div>
-                    </div>
-                </div>
+        <div class="cyber-chat-area">
+            <div class="chat-terminal-header">
+                <div class="active-room-title" id="activeRoomTitle">AKTIF_SEKTOR: YÜKLENİYOR...</div>
+                <div style="color: var(--neon-pink)" id="connStatus">[ BAĞLANTI: PASİF ]</div>
             </div>
-            <div class="messages-container" id="messagesContainer"></div>
-            <div class="chat-footer">
-                <i class="fa-regular fa-face-smile"></i>
-                <input type="text" id="messageInput" placeholder="Bir mesaj yazın" autocomplete="off" onkeypress="if(event.key === 'Enter') sendMessage()">
-                <i class="fa-solid fa-paper-plane" style="color:var(--wa-green); cursor:pointer;" onclick="sendMessage()"></i>
+            <div class="terminal-screen" id="terminalScreen"></div>
+            <div class="terminal-input-bar">
+                <span class="terminal-prompt" id="promptSpan">user@cyber:~#</span>
+                <input type="text" id="msgInput" placeholder="Mesaj verisi yazın..." onkeypress="if(event.key === 'Enter') sendCyberMessage()">
+                <label for="imageLoader" class="file-upload-label" title="Fotoğraf Yükle"><i class="fa-solid fa-file-medical"></i></label>
+                <input type="file" id="imageLoader" accept="image/*" style="display: none;" onchange="sendCyberImage(event)">
+                <i class="fa-solid fa-terminal" style="color: var(--neon-cyan); cursor: pointer; font-size: 1.2rem;" onclick="sendCyberMessage()"></i>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, get, child, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, set, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Senin Firebase Ayarların Buraya Entegre Edildi 🚀
+        // Senin Yeni Veri Tabanı Bilgilerin Tamamen Dolduruldu 🚀
         const firebaseConfig = {
-            apiKey: "AIzaSyAhVFitLgjwGVRQVq0HyW9nZRtAt--lPFI",
-            authDomain: "newday-4df55.firebaseapp.com",
-            databaseURL: "https://newday-4df55-default-rtdb.firebaseio.com",
-            projectId: "newday-4df55",
-            storageBucket: "newday-4df55.firebasestorage.app",
-            messagingSenderId: "19822036076",
-            appId: "1:19822036076:web:bd7f62fcb93504dc310449"
+            apiKey: "AIzaSyA23OvrMxgJh3LQdNKufx_mAZ6ySDL0q7Y",
+            authDomain: "newday-c3e99.firebaseapp.com",
+            databaseURL: "https://newday-c3e99-default-rtdb.firebaseio.com",
+            projectId: "newday-c3e99",
+            storageBucket: "newday-c3e99.firebasestorage.app",
+            messagingSenderId: "53077741823",
+            appId: "1:53077741823:web:40eb894e553e6d97397cca"
         };
 
-        // Firebase Başlat
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        let isLoginMode = true;
-        let currentUser = sessionStorage.getItem('currentUser') || null;
+        let myNickname = "";
+        let currentRoom = "GENEL_LOBI";
+        let messageListeners = {};
 
-        window.onload = function() {
-            if (currentUser) { showApp(currentUser); listenMessages(); }
+        window.enterNetwork = function() {
+            const input = document.getElementById('nicknameInput');
+            const nick = input.value.trim().toUpperCase();
+            if(!nick) { alert("Geçersiz Kimlik!"); return; }
+            
+            myNickname = nick;
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('mainGrid').style.display = 'grid';
+            document.getElementById('promptSpan').innerText = `${myNickname.toLowerCase()}@cyber:~#`;
+            document.getElementById('connStatus').innerText = "[ BAĞLANTI: AKTIF ]";
+            document.getElementById('connStatus').style.color = "var(--neon-green)";
+            setupRooms();
         }
 
-        window.toggleAuthMode = function() {
-            isLoginMode = !isLoginMode;
-            document.getElementById('authTitle').innerText = isLoginMode ? "Tıkdiye'ye Giriş Yap" : "Yeni Hesap Oluştur";
-            document.getElementById('authBtn').innerText = isLoginMode ? "Giriş Yap" : "Kayıt Ol";
-            document.getElementById('toggleText').innerHTML = isLoginMode ? `Hesabınız yok mu? <span onclick="toggleAuthMode()">Kayıt Ol</span>` : `Zaten hesabınız var mı? <span onclick="toggleAuthMode()">Giriş Yap</span>`;
+        function setupRooms() {
+            const defaultRooms = ["GENEL_LOBI", "YAZILIM_EKIBI", "SİBER_MEYDAN"];
+            const roomListDiv = document.getElementById('roomList');
+            roomListDiv.innerHTML = "";
+            defaultRooms.forEach((room, index) => {
+                const item = document.createElement('div');
+                item.className = `room-item ${index === 0 ? 'active' : ''}`;
+                item.id = `room-${room}`;
+                item.onclick = () => switchRoom(room);
+                item.innerHTML = `<span># ${room}</span><i class="fa-solid fa-layer-group"></i>`;
+                roomListDiv.appendChild(item);
+            });
+            switchRoom("GENEL_LOBI");
         }
 
-        window.handleAuth = function() {
-            const user = document.getElementById('username').value.trim().toLowerCase();
-            const pass = document.getElementById('password').value.trim();
-            if (!user || !pass) { alert("Boş alan bırakmayın!"); return; }
+        window.createNewRoom = function() {
+            const input = document.getElementById('newRoomName');
+            const roomName = input.value.trim().toUpperCase().replace(/ /g, "_");
+            if(!roomName) return;
+            const roomListDiv = document.getElementById('roomList');
+            if(!document.getElementById(`room-${roomName}`)) {
+                const item = document.createElement('div');
+                item.className = 'room-item';
+                item.id = `room-${roomName}`;
+                item.onclick = () => switchRoom(roomName);
+                item.innerHTML = `<span># ${roomName}</span><i class="fa-solid fa-users-viewfinder"></i>`;
+                roomListDiv.appendChild(item);
+            }
+            input.value = '';
+            switchRoom(roomName);
+        }
 
-            const dbRef = ref(db);
-            if (isLoginMode) {
-                get(child(dbRef, `users/${user}`)).then((snapshot) => {
-                    if (snapshot.exists() && snapshot.val().password === pass) {
-                        sessionStorage.setItem('currentUser', user);
-                        currentUser = user;
-                        showApp(user);
-                        listenMessages();
-                    } else { alert("Hatalı kullanıcı adı veya şifre!"); }
+        function switchRoom(roomName) {
+            currentRoom = roomName;
+            document.getElementById('activeRoomTitle').innerText = `AKTIF_SEKTOR: ${roomName}`;
+            document.querySelectorAll('.room-item').forEach(el => el.classList.remove('active'));
+            const activeItem = document.getElementById(`room-${roomName}`);
+            if(activeItem) activeItem.classList.add('active');
+
+            const screen = document.getElementById('terminalScreen');
+            screen.innerHTML = `<div class="cyber-msg"><div class="msg-meta">[SYSTEM]</div><div class="msg-text" style="border-left-color: var(--neon-pink)">#${roomName} kanalına güvenli bağlantı kuruldu.</div></div>`;
+
+            if (!messageListeners[roomName]) {
+                const roomRef = ref(db, `rooms/${roomName}`);
+                onChildAdded(roomRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (currentRoom === roomName) { displayMessage(data); }
                 });
-            } else {
-                get(child(dbRef, `users/${user}`)).then((snapshot) => {
-                    if (snapshot.exists()) { alert("Bu kullanıcı adı zaten alınmış!"); } 
-                    else {
-                        set(ref(db, 'users/' + user), { password: pass }).then(() => {
-                            alert("Kayıt başarılı! Giriş yapabilirsiniz.");
-                            toggleAuthMode();
-                        });
-                    }
-                });
+                messageListeners[roomName] = true;
             }
         }
 
-        function showApp(username) {
-            document.getElementById('authScreen').style.display = 'none';
-            document.getElementById('appScreen').style.display = 'grid';
-            document.getElementById('currentUserAvatar').innerText = username.charAt(0).toUpperCase();
+        function displayMessage(data) {
+            const screen = document.getElementById('terminalScreen');
+            const isMe = data.sender === myNickname;
+            let content = data.type === "text" ? `<div class="msg-text">${data.message}</div>` : `<div class="msg-text" style="border-left-color: var(--neon-pink)"><div>[GÖRSEL_VERİ]</div><img src="${data.message}" class="msg-image"></div>`;
+            const msgHtml = `<div class="cyber-msg" style="${isMe ? 'align-self: flex-end;' : 'align-self: flex-start;'}"><div class="msg-meta">[${data.sender}] - ${data.time}</div>${content}</div>`;
+            screen.innerHTML += msgHtml;
+            screen.scrollTop = screen.scrollHeight;
         }
 
-        window.logout = function() {
-            sessionStorage.removeItem('currentUser');
-            location.reload();
-        }
-
-        window.sendMessage = function() {
-            const input = document.getElementById('messageInput');
+        window.sendCyberMessage = function() {
+            const input = document.getElementById('msgInput');
             const text = input.value.trim();
-            if (!text || !currentUser) return;
-
+            if(!text) return;
             const now = new Date();
             const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-
-            const messagesRef = ref(db, 'messages');
-            const newMsgRef = push(messagesRef);
-            set(newMsgRef, {
-                sender: currentUser,
-                message: text,
-                time: timeStr
-            });
+            set(push(ref(db, `rooms/${currentRoom}`)), { sender: myNickname, message: text, time: timeStr, type: "text" });
             input.value = '';
         }
 
-        function listenMessages() {
-            const messagesRef = ref(db, 'messages');
-            const container = document.getElementById('messagesContainer');
-            
-            onChildAdded(messagesRef, (snapshot) => {
-                const data = snapshot.val();
-                const isMe = data.sender === currentUser;
-                
-                const msgDiv = document.createElement('div');
-                msgDiv.className = `message ${isMe ? 'sent' : 'received'}`;
-                
-                msgDiv.innerHTML = `
-                    ${!isMe ? `<span class="message-user">${data.sender}</span>` : ''}
-                    ${data.message}
-                    <span class="message-time">${data.time}</span>
-                `;
-                
-                container.appendChild(msgDiv);
-                container.scrollTop = container.scrollHeight;
-            });
+        window.sendCyberImage = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const now = new Date();
+                const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+                set(push(ref(db, `rooms/${currentRoom}`)), { sender: myNickname, message: e.target.result, time: timeStr, type: "image" });
+            }
+            reader.readAsDataURL(file);
         }
     </script>
 </body>
