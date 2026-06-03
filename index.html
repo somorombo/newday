@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ CYBER-NET SOHBET (YENİLENDİ) ⚡</title>
+    <title>⚡ CYBER-NET SOHBET v3 ⚡</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -12,44 +12,82 @@
             --neon-cyan: #00f0ff;
             --neon-pink: #ff0055;
             --neon-green: #39ff14;
-            /* Arka plan daha sade hale getirildi */
-            --bg-dark: #101015;
-            --bg-card: #151520;
+            /* Arka plan tamamen sade ve düz siyah yapıldı */
+            --bg-dark: #0a0a0c;
+            --bg-card: #111116;
             --border-neon: 1px solid #00f0ff44;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Share Tech Mono', monospace; }
         body {
-            background-color: var(--bg-dark); color: #fff; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden;
-            /* Arka plan efekti hafifletildi */
-            background-image: linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02)); background-size: 6px 100%;
+            background-color: var(--bg-dark); 
+            color: #fff; 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            overflow: hidden;
         }
 
         .login-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 5, 10, 0.98); display: flex; justify-content: center; align-items: center; z-index: 999; }
         .login-box { background: var(--bg-card); border: 2px solid var(--neon-pink); padding: 40px; text-align: center; box-shadow: 0 0 20px #ff005533; max-width: 400px; width: 90%; }
-        .cyber-grid { display: none; grid-template-columns: 300px 1fr; width: 95vw; height: 90vh; background: var(--bg-card); border: 2px solid var(--neon-cyan); box-shadow: 0 0 20px #00f0ff33; border-radius: 4px; }
-        .cyber-sidebar { border-right: 2px solid var(--neon-cyan); display: flex; flex-direction: column; background: #12121a; padding: 20px; }
+        
+        /* Ana grid yapısı tüm ekranı kaplayacak şekilde sabitlendi */
+        .cyber-grid { 
+            display: none; 
+            grid-template-columns: 300px 1fr; 
+            width: 100vw; 
+            height: 100vh; 
+            background: var(--bg-dark);
+        }
+        
+        .cyber-sidebar { border-right: 2px solid var(--neon-cyan); display: flex; flex-direction: column; background: #0e0e12; padding: 20px; height: 100vh; }
         .cyber-logo { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; text-align: center; color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); margin-bottom: 25px; letter-spacing: 2px; }
-        .group-creator { background: #1a1a25; border: var(--border-neon); padding: 10px; margin-bottom: 20px; }
-        .group-creator input, .login-box input { width: 100%; background: #101015; border: 1px solid var(--neon-pink); color: #fff; padding: 10px; margin-bottom: 15px; outline: none; font-size: 1rem; }
+        .group-creator { background: #15151f; border: var(--border-neon); padding: 10px; margin-bottom: 20px; }
+        .group-creator input, .login-box input { width: 100%; background: #0a0a0c; border: 1px solid var(--neon-pink); color: #fff; padding: 10px; margin-bottom: 15px; outline: none; font-size: 1rem; }
         
         .cyber-btn { width: 100%; background: transparent; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 10px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.2s; }
         .cyber-btn:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 15px var(--neon-cyan); }
         .section-title { color: var(--neon-pink); font-size: 1.1rem; margin-bottom: 10px; text-transform: uppercase; }
         .room-list { flex: 1; overflow-y: auto; }
-        .room-item { padding: 12px; border: var(--border-neon); margin-bottom: 10px; cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; background: #151520; }
-        .room-item:hover, .room-item.active { border-color: var(--neon-pink); box-shadow: 0 0 10px #ff005533; background: #1a101a; }
+        .room-item { padding: 12px; border: var(--border-neon); margin-bottom: 10px; cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; background: #111116; }
+        .room-item:hover, .room-item.active { border-color: var(--neon-pink); box-shadow: 0 0 10px #ff005533; background: #1a111a; }
         
-        .cyber-chat-area { display: flex; flex-direction: column; background: #101015; }
-        .chat-terminal-header { padding: 15px 20px; border-bottom: 2px solid var(--neon-cyan); display: flex; justify-content: space-between; align-items: center; background: #12121a; }
+        /* Sohbet alanı yüksekliği sabitlendi */
+        .cyber-chat-area { display: flex; flex-direction: column; background: var(--bg-dark); height: 100vh; position: relative; }
+        .chat-terminal-header { padding: 15px 20px; border-bottom: 2px solid var(--neon-cyan); display: flex; justify-content: space-between; align-items: center; background: #0e0e12; height: 60px; }
         .active-room-title { font-family: 'Orbitron', sans-serif; color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green); }
-        .terminal-screen { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        
+        /* Mesajların kayacağı ekran alanı sınırlandı */
+        .terminal-screen { 
+            flex: 1; 
+            padding: 25px; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px;
+            height: calc(100vh - 120px); /* Üst ve alt bar harici alan */
+        }
+        
         .cyber-msg { display: flex; flex-direction: column; max-width: 80%; }
         .msg-meta { font-size: 0.8rem; color: var(--neon-cyan); margin-bottom: 4px; }
-        .msg-text { background: #151520; border-left: 3px solid var(--neon-green); padding: 10px 15px; line-height: 1.5; color: #e0e0ff; }
+        .msg-text { background: #111116; border-left: 3px solid var(--neon-green); padding: 10px 15px; line-height: 1.5; color: #e0e0ff; word-break: break-word; }
         .msg-image { max-width: 300px; max-height: 300px; border: 2px solid var(--neon-pink); margin-top: 8px; display: block; box-shadow: 0 0 10px rgba(255, 0, 85, 0.3); }
         
-        .terminal-input-bar { border-top: 2px solid var(--neon-cyan); padding: 15px 20px; display: flex; gap: 15px; background: #12121a; align-items: center; }
+        /* MESAJ KUTUSU BURASI - EKRANIN EN ALTINA SABİTLENDİ 📌 */
+        .terminal-input-bar { 
+            border-top: 2px solid var(--neon-cyan); 
+            padding: 15px 20px; 
+            display: flex; 
+            gap: 15px; 
+            background: #0e0e12; 
+            align-items: center;
+            height: 60px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
         .terminal-prompt { color: var(--neon-green); font-weight: bold; font-size: 1.2rem; }
         .terminal-input-bar input[type="text"] { flex: 1; background: transparent; border: none; outline: none; color: var(--neon-green); font-size: 1.1rem; }
     </style>
@@ -94,7 +132,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Firebase Proje Bilgilerin 🚀
         const firebaseConfig = {
             apiKey: "AIzaSyA23OvrMxgJh3LQdNKufx_mAZ6ySDL0q7Y",
             authDomain: "newday-c3e99.firebaseapp.com",
@@ -182,7 +219,6 @@
             const screen = document.getElementById('terminalScreen');
             const isMe = data.sender === myNickname;
             
-            // Link algılama fonksiyonu
             function detectLinks(text) {
                 const urlRegex = /(https?:\/\/[^\s]+)/g;
                 return text.replace(urlRegex, function(url) {
@@ -203,6 +239,8 @@
 
             const msgHtml = `<div class="cyber-msg" style="${isMe ? 'align-self: flex-end;' : 'align-self: flex-start;'}"><div class="msg-meta">[${data.sender}] - ${data.time}</div>${content}</div>`;
             screen.innerHTML += msgHtml;
+            
+            // Mesaj gelince ekranı otomatik en alta kaydır
             screen.scrollTop = screen.scrollHeight;
         }
 
@@ -214,13 +252,11 @@
             const now = new Date();
             const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
             
-            // Mesaj uzunluk sınırı kaldırıldı, istediğin kadar yazabilirsin!
-
             set(push(ref(db, `rooms/${currentRoom}`)), { 
                 sender: myNickname, 
                 message: text, 
                 time: timeStr,
-                type: "text" // Link algılama alıcı tarafta yapılıyor
+                type: "text"
             });
             input.value = '';
         }
