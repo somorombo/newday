@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Clone - Dark Mode</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-main: #0b141a;
+            --bg-sidebar: #111b21;
+            --bg-chat: #0b141a;
+            --bg-panel: #202c33;
+            --text-primary: #e9edef;
+            --text-secondary: #8696a0;
+            --wa-green: #00a884;
+            --wa-green-hover: #008f72;
+            --bubble-out: #005c4b;
+            --bubble-in: #202c33;
+            --border-color: #222e35;
+            --input-bg: #2a3942;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0c1317;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+
+        /* --- AUTH SCREEN (LOGIN/REGISTER) --- */
+        .auth-container {
+            background-color: var(--bg-sidebar);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border-top: 6px solid var(--wa-green);
+        }
+
+        .auth-container i.fa-comments {
+            font-size: 3rem;
+            color: var(--wa-green);
+            margin-bottom: 15px;
+        }
+
+        .auth-container h2 {
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--wa-green);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--wa-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .auth-btn:hover {
+            background-color: var(--wa-green-hover);
+        }
+
+        .auth-toggle {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .auth-toggle span {
+            color: var(--wa-green);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* --- MAIN APP INTERFACE --- */
+        .app-container {
+            display: none; /* Giriş yapana kadar gizli */
+            width: 100vw;
+            height: 100vh;
+            grid-template-columns: 30% 70%;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            background-color: var(--bg-panel);
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--wa-green);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .header-icons {
+            color: var(--text-secondary);
+            display: flex;
+            gap: 20px;
+            font-size: 1.2rem;
+        }
+
+        .header-icons i {
+            cursor: pointer;
+        }
+
+        .header-icons i:hover {
+            color: var(--text-primary);
+        }
+
+        .search-container {
+            padding: 8px 12px;
+            background-color: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-box {
+            background-color: var(--bg-panel);
+            display: flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 8px;
+            gap: 15px;
+        }
+
+        .search-box i {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            display: flex;
+            padding: 12px 16px;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            transition: 0.2s;
+        }
+
+        .chat-item:hover, .chat-item.active {
+            background-color: var(--bg-panel);
+        }
+
+        .chat-info {
+            flex: 1;
+        }
+
+        .chat-info-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .chat-name {
+            font-weight: 600;
+        }
+
+        .chat-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .chat-preview {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 220px;
+        }
+
+        /* CHAT AREA */
+        .chat-area {
+            background-color: var(--bg-chat);
+            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); /* Klasik WA Duvar Kağıdı (Koyu için opaklığı ayarlı) */
+            background-blend-mode: overlay;
+            background-color: rgba(11, 20, 26, 0.95);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background-color: var(--bg-panel);
+            height: 60px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .active-user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .messages-container {
+            flex: 1;
+            padding: 20px 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 60%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            position: relative;
+            line-height: 1.4;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message.sent {
+            background-color: var(--bubble-out);
+            align-self: flex-end;
+            border-top-right-radius: 0;
+        }
+
+        .message.received {
+            background-color: var(--bubble-in);
+            align-self: flex-start;
+            border-top-left-radius: 0;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+            align-self: flex-end;
+            margin-top: 4px;
+        }
+
+        .chat-footer {
+            background-color: var(--bg-panel);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-footer i {
+            color: var(--text-secondary);
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        .chat-footer i:hover {
+            color: var(--text-primary);
+        }
+
+        .message-input-form {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-input-form input {
+            flex: 1;
+            background-color: var(--input-bg);
+            border: none;
+            outline: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container" id="authScreen">
+        <i class="fa-solid fa-comments"></i>
+        <h2 id="authTitle">WhatsApp'a Giriş Yap</h2>
+        
+        <div class="input-group">
+            <label for="username">Kullanıcı Adı</label>
+            <input type="text" id="username" placeholder="Kullanıcı adınızı girin">
+        </div>
+
+        <div class="input-group">
+            <label for="password">Şifre</label>
+            <input type="password" id="password" placeholder="Şifrenizi girin">
+        </div>
+
+        <button class="auth-btn" id="authBtn" onclick="handleAuth()">Giriş Yap</button>
+
+        <div class="auth-toggle">
+            <p id="toggleText">Hesabınız yok mu? <span onclick="toggleAuthMode()">Kayıt Ol</span></p>
+        </div>
+    </div>
+
+    <div class="app-container" id="appScreen">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-avatar" id="currentUserAvatar">U</div>
+                <div class="header-icons">
+                    <i class="fa-solid fa-circle-notch" title="Durum"></i>
+                    <i class="fa-solid fa-message" title="Yeni Sohbet"></i>
+                    <i class="fa-solid fa-ellipsis-vertical" title="Menü" onclick="logout()"></i>
+                </div>
+            </div>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Aratın veya yeni sohbet başlatın">
+                </div>
+            </div>
+
+            <div class="chat-list">
+                <div class="chat-item active">
+                    <div class="user-avatar">Y</div>
+                    <div class="chat-info">
+                        <div class="chat-info-top">
+                            <span class="chat-name">Yazılım Grubu 🚀</span>
+                            <span class="chat-time">18:04</span>
+                        </div>
+                        <div class="chat-preview">Gemini: Kodlar hazırlandı, test edebilirsin!</div>
+                    </div>
+                </div>
+                <div class="chat-item">
+                    <div class="user-avatar" style="background-color: #9c27b0;">A</div>
+                    <div class="chat-info">
+                        <div class="chat-info-top">
+                            <span class="chat-name">Ahmet</span>
+                            <span class="chat-time">Dün</span>
+                        </div>
+                        <div class="chat-preview">Akşam halı saha var mı?</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-area">
+            <div class="chat-header">
+                <div class="active-user-info">
+                    <div class="user-avatar">Y</div>
+                    <div>
+                        <div class="chat-name">Yazılım Grubu 🚀</div>
+                        <div class="chat-preview" style="color: var(--wa-green);">çevrimiçi</div>
+                    </div>
+                </div>
+                <div class="header-icons">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <i class="fa-solid fa-paperclip"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+            </div>
+
+            <div class="messages-container" id="messagesContainer">
+                <div class="message received">
+                    Projene koyu tema çok yakıştı! Kayıt olup giriş yapmayı denedin mi?
+                    <span class="message-time">18:01</span>
+                </div>
+                <div class="message sent">
+                    Evet, şimdi deniyorum. Mesajlaşma sistemi harika görünüyor.
+                    <span class="message-time">18:03</span>
+                </div>
+                <div class="message received">
+                    Harika! İstediğin mesajı yazıp test edebilirsin.
+                    <span class="message-time">18:04</span>
+                </div>
+            </div>
+
+            <div class="chat-footer">
+                <i class="fa-regular fa-face-smile"></i>
+                <form class="message-input-form" id="messageForm" onsubmit="sendMessage(event)">
+                    <input type="text" id="messageInput" placeholder="Bir mesaj yazın" autocomplete="off">
+                    <button type="submit" style="display: none;"></button>
+                </form>
+                <i class="fa-solid fa-microphone" id="sendIcon" onclick="triggerSubmit()"></i>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Durum Yönetimi (State)
+        let isLoginMode = true;
+        
+        // Form ve Ekran Geçiş Elemanları
+        const authScreen = document.getElementById('authScreen');
+        const appScreen = document.getElementById('appScreen');
+        const authTitle = document.getElementById('authTitle');
+        const authBtn = document.getElementById('authBtn');
+        const toggleText = document.getElementById('toggleText');
+        const messagesContainer = document.getElementById('messagesContainer');
+        const messageInput = document.getElementById('messageInput');
+
+        // Sayfa yüklendiğinde aktif kullanıcı kontrolü
+        window.onload = function() {
+            const sessionUser = sessionStorage.getItem('currentUser');
+            if (sessionUser) {
+                showApp(sessionUser);
+            }
+        }
+
+        // Giriş / Kayıt Ekranı Değiştirici
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            if (isLoginMode) {
+                authTitle.innerText = "WhatsApp'a Giriş Yap";
+                authBtn.innerText = "Giriş Yap";
+                toggleText.innerHTML = `Hesabınız yok mu? <span onclick="toggleAuthMode()">Kayıt Ol</span>`;
+            } else {
+                authTitle.innerText = "Yeni Hesap Oluştur";
+                authBtn.innerText = "Kayıt Ol";
+                toggleText.innerHTML = `Zaten hesabınız var mı? <span onclick="toggleAuthMode()">Giriş Yap</span>`;
+            }
+        }
+
+        // Kayıt ve Giriş İşlemleri (LocalStorage kullanarak)
+        function handleAuth() {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+
+            if (!user || !pass) {
+                alert("Lütfen tüm alanları doldurun!");
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem('wa_users')) || {};
+
+            if (isLoginMode) {
+                // Giriş Kontrolü
+                if (users[user] && users[user] === pass) {
+                    sessionStorage.setItem('currentUser', user);
+                    showApp(user);
+                } else {
+                    alert("Hatalı kullanıcı adı veya şifre!");
+                }
+            } else {
+                // Kayıt Kontrolü
+                if (users[user]) {
+                    alert("Bu kullanıcı adı zaten alınmış!");
+                } else {
+                    users[user] = pass;
+                    localStorage.setItem('wa_users', JSON.stringify(users));
+                    alert("Kayıt başarılı! Şimdi giriş yapabilirsiniz.");
+                    toggleAuthMode();
+                }
+            }
+        }
+
+        // Uygulama Ekranını Göster
+        function showApp(username) {
+            authScreen.style.display = 'none';
+            appScreen.style.display = 'grid';
+            
+            // Profil ikonuna kullanıcının ilk harfini koyalım
+            const avatar = document.getElementById('currentUserAvatar');
+            avatar.innerText = username.charAt(0).toUpperCase();
+            avatar.style.backgroundColor = '#00a884';
+            
+            // Mesajları en alta kaydır
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Çıkış Yapma (Profil menüsündeki üç noktaya basınca tetiklenir)
+        function logout() {
+            if(confirm("Çıkış yapmak istediğinize emin misiniz?")) {
+                sessionStorage.removeItem('currentUser');
+                location.reload();
+            }
+        }
+
+        // Mesaj Gönderme
+        function sendMessage(event) {
+            event.preventDefault();
+            const text = messageInput.value.trim();
+            if (!text) return;
+
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+            // Yeni mesaj elementi oluşturma (Sent / Giden Mesaj)
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message sent';
+            msgDiv.innerHTML = `${text} <span class="message-time">${timeStr}</span>`;
+
+            messagesContainer.appendChild(msgDiv);
+            messageInput.value = ''; // Girişi temizle
+            messagesContainer.scrollTop = messagesContainer.scrollHeight; // Aşağı kaydır
+
+            // Küçük bir bot cevabı simülasyonu (3 saniye sonra)
+            setTimeout(() => {
+                const replyDiv = document.createElement('div');
+                replyDiv.className = 'message received';
+                replyDiv.innerHTML = `Mesajını aldım! GitHub Pages'e yüklediğinde bu sistem harika çalışacak. 👍 <span class="message-time">${timeStr}</span>`;
+                messagesContainer.appendChild(replyDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1500);
+        }
+
+        // Mikrofondan kağıt uçağa ikon değişimi simülasyonu
+        messageInput.addEventListener('input', function() {
+            const icon = document.getElementById('sendIcon');
+            if (this.value.trim() !== "") {
+                icon.className = "fa-solid fa-paper-plane";
+                icon.style.color = "var(--wa-green)";
+            } else {
+                icon.className = "fa-solid fa-microphone";
+                icon.style.color = "var(--text-secondary)";
+            }
+        });
+
+        function triggerSubmit() {
+            const icon = document.getElementById('sendIcon');
+            if (icon.classList.contains('fa-paper-plane')) {
+                document.getElementById('messageForm').requestSubmit();
+                icon.className = "fa-solid fa-microphone";
+                icon.style.color = "var(--text-secondary)";
+            }
+        }
+    </script>
+</body>
+</html>
